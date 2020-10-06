@@ -1,0 +1,30 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "source": { "file": { "path": "artists.csv" } },
+  "extractor": {
+    "csv": {
+      "separator": ",",
+      "columnsOnFirstLine": true,
+      "columns": ["name:string","url:string","pictureURL:string","id_artist:integer"]
+    }
+  },
+  "transformers": [
+    { "vertex": { "class": "Artists" } }
+  ],
+  "loader": {
+    "orientdb": {
+       "dbURL": "remote:192.168.99.100:2430/dbLastFM",
+       "dbType": "graph",
+       "serverUser": "root",
+       "serverPassword": "rootpwd",
+       "classes":[
+                {"name": "Artists", "extends": "V"}
+        ],
+       "indexes": [
+         {"class":"Artists", "fields":["id_artist:integer"], "type":"UNIQUE" }
+       ]
+    }
+  }
+}

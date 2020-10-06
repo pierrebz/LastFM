@@ -1,0 +1,88 @@
+version: "3.3"
+
+services:
+  OrientDB_1:
+    image: orientdb:3.0.34
+    command: "dserver.sh -Dstorage.diskCache.bufferSize=1024 -XX:MaxDirectMemorySize=3036M -Dcache.size=10000"
+    environment: 
+      ORIENTDB_ROOT_PASSWORD: "rootpwd"
+      ORIENTDB_NODE_NAME: "LastFM_1"
+      ORIENTDB_OPTS_MEMORY: "-Xms128m -Xmx800m"
+    ports:
+      - "2431:2424"
+      - "2491:2480"
+    volumes:
+      - ./config/default-distributed-db-config.json:/orientdb/config/default-distributed-db-config.json
+      - ./config/hazelcast.xml:/orientdb/config/hazelcast.xml
+      - ./Cluster_1/orientdb-server-config.xml:/orientdb/bin/orientdb-server-config.xml
+      - ./Cluster_1/databases:/orientdb/databases
+      - ./bin/oetl.sh:/orientdb/bin/oetl.sh
+      - ./data:/orientdb/Data
+    restart: "always"
+    container_name: "LastFM_1"
+
+  OrientDB_2:
+    image: orientdb:3.0.34
+    command: "dserver.sh -Dstorage.diskCache.bufferSize=1024 -XX:MaxDirectMemorySize=3036M -Dcache.size=10000"
+    environment:
+      ORIENTDB_ROOT_PASSWORD: "rootpwd"
+      ORIENTDB_NODE_NAME: 'LastFM_2'
+      ORIENTDB_OPTS_MEMORY: "-Xms128m -Xmx800m"
+    ports:
+      - "2432:2424"
+      - "2492:2480"
+    volumes:
+      - ./config/default-distributed-db-config.json:/orientdb/config/default-distributed-db-config.json
+      - ./config/hazelcast.xml:/orientdb/config/hazelcast.xml
+      - ./Cluster_2/orientdb-server-config.xml:/orientdb/bin/orientdb-server-config.xml
+      - ./Cluster_2/databases:/orientdb/databases
+      - ./bin/oetl.sh:/orientdb/bin/oetl.sh
+      - ./data:/orientdb/Data
+    container_name: "LastFM_2"
+    restart: "always"
+    depends_on:
+      - OrientDB_1
+
+  OrientDB_3:
+    image: orientdb:3.0.34
+    command: "dserver.sh -Dstorage.diskCache.bufferSize=1024 -XX:MaxDirectMemorySize=3036M -Dcache.size=10000"
+    environment:
+      ORIENTDB_ROOT_PASSWORD: "rootpwd"
+      ORIENTDB_NODE_NAME: 'LastFM_3'
+      ORIENTDB_OPTS_MEMORY: "-Xms128m -Xmx800m"
+    ports:
+      - "2433:2424"
+      - "2493:2480"
+    volumes:
+      - ./config/default-distributed-db-config.json:/orientdb/config/default-distributed-db-config.json
+      - ./config/hazelcast.xml:/orientdb/config/hazelcast.xml
+      - ./Cluster_3/orientdb-server-config.xml:/orientdb/bin/orientdb-server-config.xml
+      - ./Cluster_3/databases:/orientdb/databases
+      - ./bin/oetl.sh:/orientdb/bin/oetl.sh
+      - ./data:/orientdb/Data
+    container_name: "LastFM_3"
+    restart: "always"
+    depends_on:
+      - OrientDB_2
+
+  OrientDB_4:
+    image: orientdb:3.0.34
+    command: "dserver.sh -Dstorage.diskCache.bufferSize=1024 -XX:MaxDirectMemorySize=3036M -Dcache.size=10000"
+    environment:
+      ORIENTDB_ROOT_PASSWORD: "rootpwd"
+      ORIENTDB_NODE_NAME: 'LastFM_4'
+      ORIENTDB_OPTS_MEMORY: "-Xms128m -Xmx800m"
+    ports:
+      - "2434:2424"
+      - "2494:2480"
+    volumes:
+      - ./config/default-distributed-db-config.json:/orientdb/config/default-distributed-db-config.json
+      - ./config/hazelcast.xml:/orientdb/config/hazelcast.xml
+      - ./Cluster_4/orientdb-server-config.xml:/orientdb/bin/orientdb-server-config.xml
+      - ./Cluster_4/databases:/orientdb/databases
+      - ./bin/oetl.sh:/orientdb/bin/oetl.sh
+      - ./data:/orientdb/Data
+    container_name: "LastFM_4"
+    restart: "always"
+    depends_on:
+      - OrientDB_3

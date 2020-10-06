@@ -1,0 +1,31 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "source": { "file": { "path": "users.csv" } },
+  "extractor": {
+    "csv": {
+      "separator": ",",
+      "columnsOnFirstLine": true,
+      "columns": ["id_user:integer","Name:string"]
+    }
+  },
+  "transformers": [
+    { "vertex": { "class": "Users" } }
+  ],
+  "loader": {
+    "orientdb": {
+       "dbURL": "remote:192.168.99.100:2430/dbLastFM",
+       "dbType": "graph",
+       "serverUser": "root",
+       "serverPassword": "rootpwd",
+       "cluster": "users_2",
+       "classes":[
+                {"name": "Users", "extends": "V"}
+        ],
+       "indexes": [
+         {"class":"Users", "fields":["id_user:integer"], "type":"UNIQUE" }
+       ]
+    }
+  }
+}

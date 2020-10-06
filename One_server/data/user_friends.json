@@ -1,0 +1,34 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "source": { "file": { "path": "user_friends.csv" } },
+  "extractor": {
+    "csv": {
+      "separator": ",",
+      "columnsOnFirstLine": true,
+      "columns": ["userID:integer","friendID:integer"]
+    }
+  },
+  "transformers": [
+    { "merge": {"joinFieldName": "userID", "lookup": "Users.id_user"}},
+    { "vertex": {"class": "Users", "skipDuplicates": true}},
+    { "edge": { "class": "Amitie",
+                "joinFieldName": "friendID",
+                "lookup": "Users.id_user",
+                "direction": "out"}
+    },
+    { "field": { "fieldNames": ["userID", "friendID"], "operation": "remove" } }
+  ],
+  "loader": {
+    "orientdb": {
+       "dbURL": "remote:192.168.99.100:2430/dbLastFM",
+       "dbType": "graph",
+       "serverUser": "root",
+       "serverPassword": "rootpwd",
+       "classes":[
+                {"name": "Amitie", "extends": "E"}
+        ]
+    }
+  }
+}

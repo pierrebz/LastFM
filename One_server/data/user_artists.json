@@ -1,0 +1,41 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "source": { "file": { "path": "user_artists.csv" } },
+  "extractor": {
+    "csv": {
+      "separator": ",",
+      "columnsOnFirstLine": true,
+      "columns": ["userID:integer","artistID:integer","weight:integer"]
+    }
+  },
+  "transformers": [
+    { "vertex": { "class": "User_artists" } },
+    { "edge": {
+        "class": "NbEcoute",
+        "joinFieldName" : "userID",
+        "lookup": "Users.id_user",
+        "direction":"in"}
+    },
+    { "edge": {
+        "class":"HasArtist",
+        "joinFieldName" : "artistID",
+        "lookup": "Artists.id_artist",
+        "direction": "out"}
+    }
+  ],
+  "loader": {
+    "orientdb": {
+       "dbURL": "remote:192.168.99.100:2430/dbLastFM",
+       "dbType": "graph",
+       "serverUser": "root",
+       "serverPassword": "rootpwd",
+       "classes":[
+                {"name": "User_artists", "extends": "V"},
+                {"name": "NbEcoute", "extends": "E"},
+                {"name": "HasArtist", "extends": "E"}
+        ]
+    }
+  }
+}

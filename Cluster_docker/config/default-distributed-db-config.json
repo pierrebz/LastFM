@@ -1,0 +1,21 @@
+{
+  "readQuorum": 1,
+  "writeQuorum": "majority",
+  "executionMode": "synchronous",
+  "readYourWrites": true,
+  "newNodeStrategy": "static",
+  "servers": {
+    "LastFM_1": "master",
+    "LastFM_2": "master",
+    "LastFM_3": "master",
+    "LastFM_4": "replica",
+    "*": "replica"
+  },
+  "clusters": {
+    "internal": {
+    },
+    "*":{
+      "servers":["<NEW_NODE>"]
+    }
+  }
+}

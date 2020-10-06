@@ -1,1 +1,5 @@
 # LastFM
+Ce repository presente un cas d'utilisation du modèle graphique d'OrientDB. 
+
+## Les données
+Last.fm est un site internet et une web radio fournissant un service de recommandation en fonction des musiques écoutées sur les différentes plateformes de streaming (Apple Music, Spotify, Youtube, Google Play Music, …). Lors du « 2nd International Workshop on Information Heterogeneity and Fusion in Recommender Systems », HetRec a publié un jeu de données provenant de last.fm, ces données sont actuellement hébergées sur le site de Grouplens (https://grouplens.org/datasets/hetrec-2011/). Il s’agit d’un ensemble de 6 fichiers rassemblant les informations de 1892 utilisateurs et de 17632 artistes. Ces différents fichiers disposent de clefs étrangères permettant de créer des liens entre elles. 

@@ -1,0 +1,50 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "source": { "file": { "path": "user_taggedartists.csv" } },
+  "extractor": {
+    "csv": {
+      "separator": ",",
+      "columnsOnFirstLine": true,
+      "columns": ["userID:integer","artistID:integer",
+      "tagID:integer", "day:integer", "month:integer", "year:integer"]
+    }
+  },
+  "transformers": [
+    { "vertex": { "class": "User_taggedartists" } },
+    { "edge": {
+        "class": "HasTag",
+        "joinFieldName" : "tagID",
+        "lookup": "Tags.tagID",
+        "direction":"out"}
+    },
+    { "edge": {
+        "class":"TagDay",
+        "joinFieldName" : "userID",
+        "lookup": "Users.id_user",
+        "direction": "in"}
+    },
+    { "edge": {
+        "class": "HasArtistTag",
+        "joinFieldName" : "artistID",
+        "lookup":"Artists.id_artist",
+        "direction":"out"
+    }}
+  ],
+  "loader": {
+    "orientdb": {
+       "dbURL": "remote:192.168.99.100:2430/dbLastFM",
+       "dbType": "graph",
+       "serverUser": "root",
+       "serverPassword": "rootpwd",
+       "cluster": "user_taggedartists_1",
+       "classes":[
+                {"name": "User_taggedartists"},
+                {"name": "HasTag"},
+                {"name": "TagDay"},
+                {"name": "HasArtistTag", "extends": "E"}
+        ]
+    }
+  }
+}

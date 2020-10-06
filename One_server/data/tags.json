@@ -1,0 +1,30 @@
+{
+  "config": {
+    "log": "debug"
+  },
+  "source": { "file": { "path": "tags.csv" } },
+  "extractor": {
+    "csv": {
+      "separator": ",",
+      "columnsOnFirstLine": true,
+      "columns": ["tagID:integer","tagValue:string"]
+    }
+  },
+  "transformers": [
+    { "vertex": { "class": "Tags" } }
+  ],
+  "loader": {
+    "orientdb": {
+       "dbURL": "remote:192.168.99.100:2430/dbLastFM",
+       "dbType": "graph",
+       "serverUser": "root",
+       "serverPassword": "rootpwd",
+       "classes":[
+                {"name": "Tags", "extends": "V"}
+        ],
+       "indexes": [
+         {"class":"Tags", "fields":["tagID:integer"], "type":"UNIQUE" }
+       ]
+    }
+  }
+}

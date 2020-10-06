@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  OrientDB:
+    image: orientdb:3.0.34
+    environment: 
+      ORIENTDB_ROOT_PASSWORD: "rootpwd"
+    ports:
+      - "2430:2424"
+      - "2490:2480"
+    volumes:
+      - ./config:/orientdb/config
+      - ./bin:/orientdb/bin
+      - ./databases:/orientdb/databases
+      - ./backup:/orientdb/backup
+      - ./data:/orientdb/Data
+    container_name: "LastFM_full"
